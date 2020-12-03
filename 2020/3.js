@@ -10,18 +10,17 @@ const slopes = [
 ];
 
 const calculateNumberOfTrees = ({ right, down }) => {
-  let visitedCoordinates = [];
-  for (let i = 1; i < rows.length; i++) {
-    visitedCoordinates.push({
-      x: (i * right) % rows[i].split("").length,
-      y: i * down,
-    });
-  }
-
-  return visitedCoordinates
-    .filter(({y}) => !!rows[y])
+  return rows
+    .map((row, i) => ({
+      x: ((i + 1) * right) % row.split("").length,
+      y: (i + 1) * down,
+    }))
+    .filter(({ y }) => !!rows[y])
     .filter(({ x, y }) => rows[y].split("")[x % rows.length] === "#").length;
 };
 
 console.log("3a", calculateNumberOfTrees(slopes[1]));
-console.log("3b", slopes.reduce((prev, next) => prev * calculateNumberOfTrees(next), 1));
+console.log(
+  "3b",
+  slopes.reduce((prev, next) => prev * calculateNumberOfTrees(next), 1)
+);
