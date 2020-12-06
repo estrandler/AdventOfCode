@@ -38,9 +38,10 @@ const generateFirstAndLastRow = [0, 1, 2, 3, 4, 5, 6, 7].concat(
 );
 
 //RESULT
-const A = passes.reduce((prev, instructions) => {
-  return Math.max(prev, computeSeatId(instructions));
-}, 0);
+const A = passes.reduce(
+  (prev, instructions) => Math.max(prev, computeSeatId(instructions)),
+  0
+);
 
 const B = passes
   .map(computeSeatId)
