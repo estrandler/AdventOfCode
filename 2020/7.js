@@ -20,4 +20,35 @@ const doStuff = (bag) => {
 
 const result = new Set([...firstBags.map(doStuff).flat(), ...firstBags]);
 
-console.log(result.size);
+console.log("A", result.size);
+
+const formattedBags = bags.map((bag) => {
+  const children = (bag.match(/[1-9]{1}[^,.]*/g) || []).map((match) => ({
+    name: match.split(" ")[1] + " " + match.split(" ")[2],
+    count: Number(match.split(" ")[0]),
+  }));
+
+  return {
+    name: extractBagName(bag),
+    children,
+  };
+});
+
+const countBags = (bagName) => {
+  const bag = formattedBags.find(({ name }) => bagName === name);
+
+  if (!bag) return 0;
+
+  const countImmideateChildren = bag.children.reduce(
+    (prev, curr) => prev + curr.count,
+    0
+  );
+
+  const countFromChildren = bag.children
+    .map((child) => child.count * countBags(child.name))
+    .reduce((prev, curr) => prev + curr, 0);
+
+  return countImmideateChildren + countFromChildren;
+};
+
+console.log(countBags("shiny gold"));
