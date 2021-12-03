@@ -13,6 +13,9 @@ switch (selectedDay)
     case "2":
         Two();
         break;
+    case "3":
+        Three();
+        break;
     default:
         throw new ArgumentOutOfRangeException();
 }
@@ -104,4 +107,29 @@ void Two()
     
     var resultB = horizontalB * verticalB;
     Console.WriteLine($"Day2a: {resultB}");
+}
+
+void Three()
+{
+    var binaries = File.ReadAllLines("./three.txt")
+        .ToList();
+
+    var binaryResult = Enumerable.Range(0, binaries.First().Length).Select(i =>
+        {
+            var grouped = binaries.Select(b => b[i]).GroupBy(b => b).OrderByDescending(b => b.Count())
+                .Select(b => b.Key).ToList();
+
+            return (gamma: grouped[0], epsilon: grouped[1]);
+        })
+        .Aggregate((gamma: string.Empty, epsilon: string.Empty) ,(result, item) =>
+        {
+            result.gamma += item.gamma;
+            result.epsilon += item.epsilon;
+
+            return result;
+        });
+
+    var result = Convert.ToInt32(binaryResult.gamma, 2) * Convert.ToInt32(binaryResult.epsilon, 2);
+    Console.WriteLine($"Day3a: {result}");
+
 }
