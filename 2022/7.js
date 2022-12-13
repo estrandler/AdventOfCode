@@ -38,13 +38,29 @@ const sumTreeItems = Object.entries(tree).reduce(
 
     const sum = children.reduce((p, c) => p + c[1], count);
 
+    prev.tree[path] = sum;
+
     if (sum < 100000) {
-      prev += sum;
+      prev.countSmall += sum;
     }
 
     return prev;
   },
-  0
+  { countSmall: 0, tree: {} }
 );
 
-console.log("a", sumTreeItems); //1581595
+console.log("a", sumTreeItems.countSmall); //1581595
+
+const total = 70000000;
+const totalNeeded = 30000000;
+const totalSize = sumTreeItems.tree["/"];
+const totalAvailable = total - totalSize;
+const toFind = Math.abs(totalAvailable - totalNeeded);
+
+const closest = Object.entries(sumTreeItems.tree)
+  .sort((a, b) => a[1] - b[1])
+  .filter(([_, val]) => {
+    return val >= toFind;
+  })[0];
+
+console.log("b", closest);
