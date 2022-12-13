@@ -12,12 +12,13 @@ let scenic = 0;
 const countWhileHigher = (arr, val) =>
   arr.reduce(
     (prev, curr) => {
-      if (val > curr) {
-        prev.count++;
-      } else if (val === curr) {
-        prev.count++;
-        prev.continue = false;
-      } else {
+      if (!prev.continue) {
+        return prev;
+      }
+
+      prev.count++;
+
+      if (val <= curr) {
         prev.continue = false;
       }
 
@@ -46,7 +47,6 @@ for (let i = 0; i < input.length; i++) {
     if (visibleAbove || visibleBelow || visibleLeft || visibleRight) {
       visible++;
     }
-
     const scenicRight = countWhileHigher(right, val);
     const scenicBelow = countWhileHigher(below, val);
     const scenicAbove = countWhileHigher(above.reverse(), val);
