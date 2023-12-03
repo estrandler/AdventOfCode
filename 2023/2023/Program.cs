@@ -2,11 +2,15 @@
 var levels = new Dictionary<string, Func<string>>() {
     {"1a", () => new One().SolveA() },
     {"1b", () => new One().SolveB() },
+    {"2a", () => new Two().SolveA() },
+    {"2b", () => new Two().SolveB() },
+    {"3a", () => new Three().SolveA() },
+    {"3b", () => new Three().SolveB() },
 };
 
 while (true)
 {
-    Console.WriteLine($"Input which level to solve (or exit):\r\n{string.Join("\r\n", levels.Keys.Select(k => k))}");
+    Console.WriteLine($"Input which level to solve (or exit):");
 
     var input = Console.ReadLine();
 

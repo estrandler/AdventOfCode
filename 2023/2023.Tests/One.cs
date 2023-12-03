@@ -1,6 +1,6 @@
 namespace _2023.Tests;
 
-public class Tests
+public class OneTests
 {
     [SetUp]
     public void SetUp()
