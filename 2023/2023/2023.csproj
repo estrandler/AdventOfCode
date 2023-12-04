@@ -12,6 +12,9 @@
     <None Update="One.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Four.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Two.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
