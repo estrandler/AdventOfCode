@@ -7,25 +7,9 @@ public class Two : BaseLevel, ILevel
     public string SolveA()
     {
         var result = GetInput()
-            .Select(line =>
-            {
-                var l = line.Split(":");
-                return new Row
-                {
-                    Id = Convert.ToInt32(l[0].Split(" ")[1]),
-                    Games = l[1].Split(";").Select(g => new Game
-                    {
-                        Sets = g
-                            .Split(",")
-                            .Select(w => w.Trim())
-                            .ToDictionary(k => k.Split(" ")[1], s => Convert.ToInt32(s.Split(" ")[0]))
-                    }).ToArray(),
-                    Raw = line
-                };
-            })
+            .Select(ToRow)
             .Where(g => g.IsValid())
             .Aggregate(0, (total, next) => next.Id + total);
-            
 
         return result.ToString();
     }
@@ -33,27 +17,25 @@ public class Two : BaseLevel, ILevel
     public string SolveB()
     {
         var result = GetInput()
-            .Select(line =>
-            {
-                var l = line.Split(":");
-                return new Row
-                {
-                    Id = Convert.ToInt32(l[0].Split(" ")[1]),
-                    Games = l[1].Split(";").Select(g => new Game
-                    {
-                        Sets = g
-                            .Split(",")
-                            .Select(w => w.Trim())
-                            .ToDictionary(k => k.Split(" ")[1], s => Convert.ToInt32(s.Split(" ")[0]))
-                    }).ToArray(),
-                    Raw = line
-                };
-            })
+            .Select(ToRow)
             .Select(g => g.CalculatePower())
             .Aggregate(0, (total, next) => next + total);
         
         return result.ToString();
     }
+
+    internal Row ToRow(string line) => new Row
+    {
+        Id = Convert.ToInt32(line.Split(":")[0].Split(" ")[1]),
+        Games = line.Split(":")[1].Split(";").Select(g => new Game
+        {
+            Sets = g
+                .Split(",")
+                .Select(w => w.Trim())
+                .ToDictionary(k => k.Split(" ")[1], s => Convert.ToInt32(s.Split(" ")[0]))
+        }).ToArray(),
+        Raw = line
+    };
 }
 
 internal class Row
