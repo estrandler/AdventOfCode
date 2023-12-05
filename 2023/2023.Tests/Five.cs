@@ -156,7 +156,7 @@ public class FiveTests
         };
 
         // Act
-        var result = map.ContainsValue(seed);
+        var result = map.ContainsKey(seed);
 
         // Assert
         result.Should().BeFalse();
@@ -176,7 +176,7 @@ public class FiveTests
         };
 
         // Act
-        var result = map.ContainsValue(seed);
+        var result = map.ContainsKey(seed);
 
         // Assert
         result.Should().BeFalse();
@@ -193,5 +193,32 @@ public class FiveTests
 
         // Assert
         result.Should().Be("35");
+    }
+
+    [Test]
+    public void GetSeedsPartTwo()
+    {
+
+        // Arrange
+        var line = "seeds: 79 14 55 13";
+
+        // Act
+        var result = new Five().GetSeedsPartTwo(line);
+
+        // Assert
+        result.Should().BeEquivalentTo(new[] { 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67 });
+    }
+
+    [Test]
+    public void The_whole_shebang_b()
+    {
+
+        // Arrange
+
+        // Act
+        var result = new Five().SolveB();
+
+        // Assert
+        result.Should().Be("46");
     }
 }
