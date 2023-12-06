@@ -143,7 +143,7 @@ public class FiveTests
     }
 
     [Test]
-    public void ContainsValue_should_return_false_when_not_containing()
+    public void ContainsKey_should_return_false_when_not_containing()
     {
 
         // Arrange
@@ -163,7 +163,7 @@ public class FiveTests
     }
 
     [Test]
-    public void ContainsValue_should_return_true_when_containing()
+    public void ContainsKey_should_return_true_when_containing()
     {
 
         // Arrange
@@ -179,7 +179,7 @@ public class FiveTests
         var result = map.ContainsKey(seed);
 
         // Assert
-        result.Should().BeFalse();
+        result.Should().BeTrue();
     }
 
     [Test]
@@ -195,18 +195,104 @@ public class FiveTests
         result.Should().Be("35");
     }
 
+    //[Test]
+    //public void GetSeedsPartTwo()
+    //{
+
+    //    // Arrange
+    //    var line = "seeds: 79 14 55 13";
+
+    //    // Act
+    //    var result = new Five().GetSeedsPartTwo(line);
+
+    //    // Assert
+    //    result.Should().BeEquivalentTo(new[] { 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67 });
+    //}
+
+
+
     [Test]
-    public void GetSeedsPartTwo()
+    public void ContainsValue_should_return_false_when_not_containing()
     {
 
         // Arrange
-        var line = "seeds: 79 14 55 13";
+        var location = 79;
+        var map = new Map
+        {
+            DestinationRangeStart = 50,
+            SourceRangeStart = 98,
+            RangeLength = 2
+        };
 
         // Act
-        var result = new Five().GetSeedsPartTwo(line);
+        var result = map.ContainsValue(location);
 
         // Assert
-        result.Should().BeEquivalentTo(new[] { 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67 });
+        result.Should().BeFalse();
+    }
+
+    [Test]
+    public void ContainsValue_should_return_true_when_containing()
+    {
+
+        // Arrange
+        var location = 79;
+        var map = new Map
+        {
+            DestinationRangeStart = 52,
+            SourceRangeStart = 50,
+            RangeLength = 48
+        };
+
+        // Act
+        var result = map.ContainsValue(location);
+
+        // Assert
+        result.Should().BeTrue();
+    }
+
+    [Test]
+    public void MapToPrevious_should_return_correct_mapping()
+    {
+
+        // Arrange
+        var location = 79;
+        var map = new Map
+        {
+            DestinationRangeStart = 52,
+            SourceRangeStart = 50,
+            RangeLength = 48
+        };
+
+        // Act
+        var result = map.MapToPrevious(location);
+
+        // Assert
+        result.Should().Be(77);
+    }
+
+    [Test]
+    public void ContainsValue_false_MapToPrevious_should_fallback_to_same_number()
+    {
+
+        // Arrange
+        // Arrange
+        var location = 79;
+        var maps = new[]{ new Map
+        {
+            DestinationRangeStart = 50,
+            SourceRangeStart = 98,
+            RangeLength = 2
+        }};
+
+        // Act
+
+        var map = maps.FirstOrDefault(m => m.ContainsValue(location));
+        var result = map?.MapToPrevious(location) ?? location;
+
+        // Assert
+        map.Should().BeNull();
+        result.Should().Be(79);
     }
 
     [Test]

@@ -46,36 +46,27 @@ public class Five : BaseLevel, ILevel
         var temperatureToHumidity = GetMapFromKey("temperature-to-humidity", input);
         var humidityToLocation = GetMapFromKey("humidity-to-location", input);
 
-        var locations = humidityToLocation.OrderBy(m => m.DestinationRangeStart).ToArray();
-
         long result = 0;
-
-        for (int i = 0; i < locations.Length; i++)
+        for (long location = 1; location < long.MaxValue; location++)
         {
-            long current = 0;
-            var location = locations[i];
+            var humidity = humidityToLocation.FirstOrDefault(m => m.ContainsValue(location))?.MapToPrevious(location) ?? location;
+            var temperature = temperatureToHumidity.FirstOrDefault(m => m.ContainsValue(humidity))?.MapToPrevious(humidity) ?? humidity;
+            var light = lightToTemperature.FirstOrDefault(m => m.ContainsValue(temperature))?.MapToPrevious(temperature) ?? temperature;
+            var water = waterToLight.FirstOrDefault(m => m.ContainsValue(light))?.MapToPrevious(light) ?? light;
+            var fertilizer = fertilizerToWater.FirstOrDefault(m => m.ContainsValue(water))?.MapToPrevious(water) ?? water;
+            var soil = soilToFertalizer.FirstOrDefault(m => m.ContainsValue(fertilizer))?.MapToPrevious(fertilizer) ?? fertilizer;
+            var seed = seedToSoil.FirstOrDefault(m => m.ContainsValue(soil))?.MapToPrevious(soil) ?? soil;
 
-            for (long j = 0; j < location.RangeLength; j++)
+            if (seeds.Any(s => s.ContainsValue(seed)))
             {
-                long start = location.DestinationRangeStart + j;
-                current = humidityToLocation.FirstOrDefault(m => m.ContainsValue(location.DestinationRangeStart + j))?.MapToPrevious(current) ?? current;
-                current = temperatureToHumidity.FirstOrDefault(m => m.ContainsValue(current))?.MapToPrevious(current) ?? current;
-                current = lightToTemperature.FirstOrDefault(m => m.ContainsValue(current))?.MapToPrevious(current) ?? current;
-                current = waterToLight.FirstOrDefault(m => m.ContainsValue(current))?.MapToPrevious(current) ?? current;
-                current = fertilizerToWater.FirstOrDefault(m => m.ContainsValue(current))?.MapToPrevious(current) ?? current;
-                current = soilToFertalizer.FirstOrDefault(m => m.ContainsValue(current))?.MapToPrevious(current) ?? current;
-                current = seedToSoil.FirstOrDefault(m => m.ContainsValue(current))?.MapToPrevious(current) ?? current;
-
-                if (seeds.Any(s => s.ContainsKey(current)))
-                {
-                    result = current;
-                    break;
-                }
+                result = location;
+                break;
             }
         }
 
         return result.ToString();
     }
+
     internal long[] GetSeeds(string firstLine) => firstLine.Split(":")[1].Trim().Split(" ").Select(s => Convert.ToInt64(s)).ToArray();
     internal Map[] GetSeedsPartTwo(string firstLine)
     {
@@ -90,6 +81,7 @@ public class Five : BaseLevel, ILevel
             maps.Add(new Map
             {
                 SourceRangeStart = seed,
+                DestinationRangeStart = seed,
                 RangeLength = amountToTake
             });
         }
