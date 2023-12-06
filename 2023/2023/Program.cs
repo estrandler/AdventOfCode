@@ -10,6 +10,8 @@ var levels = new Dictionary<string, Func<string>>() {
     {"4b", () => new Four().SolveB() },
     {"5a", () => new Five().SolveA() },
     {"5b", () => new Five().SolveB() },
+    {"6a", () => new Six().SolveA() },
+    {"6b", () => new Six().SolveB() },
 };
 
 while (true)
