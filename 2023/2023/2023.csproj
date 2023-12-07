@@ -18,6 +18,9 @@
     <None Update="Four.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Seven.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Two.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
