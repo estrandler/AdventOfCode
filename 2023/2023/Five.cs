@@ -49,6 +49,11 @@ public class Five : BaseLevel, ILevel
         long result = 0;
         for (long location = 1; location < long.MaxValue; location++)
         {
+            if(location % 5000000 == 0)
+            {
+                Console.WriteLine($"Location: {location}");
+            }
+
             var humidity = humidityToLocation.FirstOrDefault(m => m.ContainsValue(location))?.MapToPrevious(location) ?? location;
             var temperature = temperatureToHumidity.FirstOrDefault(m => m.ContainsValue(humidity))?.MapToPrevious(humidity) ?? humidity;
             var light = lightToTemperature.FirstOrDefault(m => m.ContainsValue(temperature))?.MapToPrevious(temperature) ?? temperature;
@@ -117,8 +122,8 @@ public class Map
     public long SourceRangeStart { get; set; }
     public long RangeLength { get; set; }
 
-    internal bool ContainsKey(long key) => key >= SourceRangeStart && SourceRangeStart + RangeLength >= key;
-    internal bool ContainsValue(long key) => key >= DestinationRangeStart && DestinationRangeStart + RangeLength >= key;
+    internal bool ContainsKey(long key) => SourceRangeStart <= key && key <= SourceRangeStart + RangeLength;
+    internal bool ContainsValue(long key) => DestinationRangeStart <= key && key <= DestinationRangeStart + RangeLength;
     internal long MapToNext(long key) => key - SourceRangeStart + DestinationRangeStart;
     internal long MapToPrevious(long key) => key + SourceRangeStart - DestinationRangeStart;
 
